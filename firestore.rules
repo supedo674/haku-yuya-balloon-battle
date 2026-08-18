@@ -1,0 +1,19 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function roomData(roomId) { return get(/databases/$(database)/documents/rooms/$(roomId)).data; }
+    function isMember(roomId) { return signedIn() && (roomData(roomId).hostUid == request.auth.uid || roomData(roomId).guestUid == request.auth.uid); }
+    match /rooms/{roomId} {
+      allow create: if signedIn() && request.resource.data.hostUid == request.auth.uid && request.resource.data.guestUid == null;
+      allow read: if signedIn() && (resource.data.hostUid == request.auth.uid || resource.data.guestUid == request.auth.uid || resource.data.guestUid == null);
+      allow update: if signedIn() && ((resource.data.hostUid == request.auth.uid && request.resource.data.hostUid == resource.data.hostUid && request.resource.data.guestUid == resource.data.guestUid) || (resource.data.guestUid == null && request.resource.data.guestUid == request.auth.uid && request.resource.data.hostUid == resource.data.hostUid && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['guestUid', 'status', 'updatedAt'])));
+      allow delete: if signedIn() && resource.data.hostUid == request.auth.uid;
+      match /moves/{role} {
+        allow read: if isMember(roomId);
+        allow create, update: if isMember(roomId) && ((role == 'haku' && roomData(roomId).hostUid == request.auth.uid) || (role == 'yuya' && roomData(roomId).guestUid == request.auth.uid));
+        allow delete: if isMember(roomId) && roomData(roomId).hostUid == request.auth.uid;
+      }
+    }
+  }
+}
