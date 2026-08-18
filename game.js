@@ -1,8 +1,8 @@
 "use strict";
 const RULES={maxHp:100,damage:{head:25,waist:20,legs:15},counter:10};
-const ACTIONS={"attack-head":["attack","head","head"],"attack-waist":["attack","waist","waist"],"attack-legs":["attack","legs","legs"],"defend-upper":["defend","upper","defense"],"defend-legs":["defend","legs","defense"]};
+const ACTIONS={"attack-head":["attack","head","head"],"attack-waist":["attack","waist","waist"],"attack-legs":["attack","legs","legs"],"defend-upper":["defend","upper","defense"],"defend-legs":["defend","legs","legDefense"]};
 const ZONE={head:"頭",waist:"腰",legs:"足"};
-const ASSETS={background:"assets/pool-background-platforms.png",haku:{idle:"assets/haku-idle.png",head:"assets/haku-head.png",waist:"assets/haku-waist.png",legs:"assets/haku-legs.png",defense:"assets/haku-defense.png",fall:"assets/haku-fall.png"},yuya:{idle:"assets/yuya-idle.png",head:"assets/yuya-head.png",waist:"assets/yuya-waist.png",legs:"assets/yuya-legs.png",defense:"assets/yuya-defense.png",fall:"assets/yuya-fall.png"}};
+const ASSETS={background:"assets/pool-background-platforms.png",haku:{idle:"assets/haku-idle.png",head:"assets/haku-head.png",waist:"assets/haku-waist.png",legs:"assets/haku-legs.png",defense:"assets/haku-defense.png",legDefense:"assets/haku-leg-defense.png",fall:"assets/haku-fall.png"},yuya:{idle:"assets/yuya-idle.png",head:"assets/yuya-head.png",waist:"assets/yuya-waist.png",legs:"assets/yuya-legs.png",defense:"assets/yuya-defense.png",legDefense:"assets/yuya-leg-defense.png",fall:"assets/yuya-fall.png"}};
 
 class GameState{constructor(){this.reset()}reset(){this.hp={haku:100,yuya:100};this.round=1;this.chooser="haku";this.choices={};this.visual={haku:"idle",yuya:"idle"};this.finished=false;this.animating=false;this.motionStart=performance.now()}}
 
