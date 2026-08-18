@@ -40,7 +40,6 @@ const api = {
   async createRoom(code) {
     if (!user) throw new Error("Firebaseへの接続準備中です");
     const ref = doc(db, "rooms", code);
-    if ((await getDoc(ref)).exists()) throw new Error("同じ部屋番号が存在します。もう一度作成してください");
     await setDoc(ref, {
       hostUid: user.uid, guestUid: null, status: "waiting",
       hakuHp: 100, yuyaHp: 100, round: 1, lastResult: null,
